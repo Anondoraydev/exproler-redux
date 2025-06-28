@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { ITask } from "@/types";
 import { Trash2 } from "lucide-react";
@@ -25,6 +26,7 @@ export default function TaskCard({ task }: IProps) {
           <Button variant="link" className="p-0 text-red-500">
             <Trash2 />
           </Button>
+          <Checkbox />
         </div>
       </div>
       <p className="mt-5">{task.desceiption}</p>
