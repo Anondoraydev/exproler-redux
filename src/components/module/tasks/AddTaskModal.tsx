@@ -16,12 +16,22 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogDescription } from "@radix-ui/react-dialog";
+
 import { useForm } from "react-hook-form";
 
 interface TaskFormData {
   title: string;
+  description: string;
+  priority: string;
 }
 
 export function AddTaskModal() {
@@ -59,6 +69,7 @@ export function AddTaskModal() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="title"
@@ -68,6 +79,30 @@ export function AddTaskModal() {
                   <FormControl>
                     <Textarea placeholder="Enter task Desceiption" {...field} />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>priority</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a verified email to display" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
