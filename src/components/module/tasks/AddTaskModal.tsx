@@ -14,8 +14,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -24,21 +30,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { DialogDescription } from "@radix-ui/react-dialog";
-
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-interface TaskFormData {
-  title: string;
-  description: string;
-  priority: string;
-}
+import { addTask } from "@/redux/features/task/taskSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 export function AddTaskModal() {
-  const form = useForm<TaskFormData>();
+  const form = useForm();
 
-  const onSubmit = (data: TaskFormData) => {
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (data) => {
     console.log(data);
+    dispatch(addTask(data));
   };
 
   return (
@@ -48,15 +57,13 @@ export function AddTaskModal() {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
-        <DialogDescription className="sr-only">
-          Fill up this form to add task
-        </DialogDescription>
         <DialogHeader>
           <DialogTitle>Add Task</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Title */}
             <FormField
               control={form.control}
               name="title"
@@ -66,35 +73,40 @@ export function AddTaskModal() {
                   <FormControl>
                     <Input placeholder="Enter task title" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
 
+            {/* Description */}
             <FormField
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Desceiption</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter task Desceiption" {...field} />
+                    <Textarea placeholder="Enter task description" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
+
+            {/* Priority */}
             <FormField
               control={form.control}
               name="priority"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>priority</FormLabel>
+                  <FormLabel>Priority</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a verified email to display" />
+                        <SelectValue placeholder="Select priority" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -103,6 +115,47 @@ export function AddTaskModal() {
                       <SelectItem value="high">High</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Date of Birth */}
+            <FormField
+              control={form.control}
+              name="dateOfBirth"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of Birth</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          " pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <DayPicker
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => field.onChange(date)}
+                        // disabled={[
+                        //   { after: new Date() },
+                        //   { before: new Date("1900-01-01") },
+                        // ]}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </FormItem>
               )}
             />

@@ -16,8 +16,8 @@ export default function TaskCard({ task }: IProps) {
           <div
             className={cn("w-3 h-3 rounded-full", {
               "bg-green-500": task.priority === "low",
-              "bg-yellow-500": task.priority === "Medium",
-              "bg-red-500": task.priority === "High",
+              "bg-yellow-500": task.priority === "medium",
+              "bg-red-500": task.priority === "high",
             })}
           ></div>
           <h1>{task.title}</h1>
@@ -29,7 +29,7 @@ export default function TaskCard({ task }: IProps) {
           <Checkbox />
         </div>
       </div>
-      <p className="mt-5">{task.desceiption}</p>
+      <p className="mt-5">{task.description}</p>
     </div>
   );
 }
