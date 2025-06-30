@@ -1,7 +1,7 @@
 import type { RootState } from "@/redux/store";
 import type { ITask } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
+import { v4 as uuidv4 } from 'uuid';
 
 interface InitialState{
     tasks:ITask[];
@@ -19,10 +19,11 @@ name:'task',
 initialState,
 reducers:{
     addTask:(state,action: PayloadAction<ITask>)=>{
-        const id ="54f476544658"
+        const id = uuidv4()
         const taskData={
             ...action.payload,
             id,
+            isCompleted: false,
         };
 
 
