@@ -1,10 +1,10 @@
-import { selecetTasks } from "@/redux/features/task/taskSlice";
+import { selectTasks } from "@/redux/features/task/taskSlice";
 import { useAppselector } from "@/redux/hook";
 import { AddTaskModal } from "../module/tasks/AddTaskModal";
 import TaskCard from "../module/tasks/TaskCard";
 
 const Tasks = () => {
-  const tasks = useAppselector(selecetTasks);
+  const tasks = useAppselector(selectTasks);
 
   console.log(tasks);
   return (
